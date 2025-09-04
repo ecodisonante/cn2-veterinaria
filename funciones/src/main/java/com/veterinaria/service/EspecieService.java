@@ -33,6 +33,12 @@ public class EspecieService {
         }
     }
 
+    public List<Especie> findByIds(List<Long> ids) throws SQLException {
+        try (Connection c = Db.open()) {
+            return repo.findByIds(c, ids);
+        }
+    }
+
     public Especie update(long id, Especie req) throws SQLException {
         validate(req);
         try (Connection c = Db.open()) {

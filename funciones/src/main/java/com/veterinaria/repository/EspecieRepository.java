@@ -18,7 +18,8 @@ public class EspecieRepository {
             ps.setString(1, e.getNombre());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) return rs.getLong(1);
+                if (rs.next())
+                    return rs.getLong(1);
                 throw new SQLException("No se pudo obtener el ID generado");
             }
         }
@@ -29,7 +30,8 @@ public class EspecieRepository {
         try (PreparedStatement ps = conn.prepareStatement(q)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return map(rs);
+                if (rs.next())
+                    return map(rs);
                 return null;
             }
         }
@@ -40,7 +42,32 @@ public class EspecieRepository {
         try (PreparedStatement ps = conn.prepareStatement(q)) {
             try (ResultSet rs = ps.executeQuery()) {
                 List<Especie> out = new ArrayList<>();
-                while (rs.next()) out.add(map(rs));
+                while (rs.next())
+                    out.add(map(rs));
+                return out;
+            }
+        }
+    }
+
+    public List<Especie> findByIds(Connection conn, List<Long> ids) throws SQLException {
+        if (ids == null || ids.isEmpty())
+            return List.of();
+
+        // generar query con placeholders
+        String placeholders = String.join(", ", ids.stream().map(i -> "?").toList());
+        String q = "SELECT ID, NOMBRE FROM ESPECIE WHERE ID IN (" + placeholders + ")";
+
+        try (PreparedStatement ps = conn.prepareStatement(q)) {
+            int idx = 1;
+
+            // setear valores de los placeholders
+            for (Long id : ids)
+                ps.setLong(idx++, id);
+                
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Especie> out = new ArrayList<>();
+                while (rs.next())
+                    out.add(map(rs));
                 return out;
             }
         }
