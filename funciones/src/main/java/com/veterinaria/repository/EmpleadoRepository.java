@@ -47,7 +47,19 @@ public class EmpleadoRepository {
     }
 
     public Empleado findById(Connection conn, Long id) throws SQLException {
-        String query = "SELECT * FROM EMPLEADO WHERE id=?";
+        String query = """
+                SELECT
+                    id,
+                    rut,
+                    nombre_completo,
+                    email,
+                    telefono,
+                    rol_id,
+                    estado_id,
+                    fecha_ingreso,
+                    fecha_creacion
+                FROM EMPLEADO WHERE id=?
+                """;
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setLong(1, id);
@@ -60,7 +72,19 @@ public class EmpleadoRepository {
     }
 
     public List<Empleado> findAll(Connection conn) throws SQLException {
-        String query = "SELECT * FROM EMPLEADO ORDER BY id";
+        String query = """
+                SELECT
+                    id,
+                    rut,
+                    nombre_completo,
+                    email,
+                    telefono,
+                    rol_id,
+                    estado_id,
+                    fecha_ingreso,
+                    fecha_creacion
+                FROM EMPLEADO ORDER BY id
+                """;
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             try (ResultSet rs = ps.executeQuery()) {
