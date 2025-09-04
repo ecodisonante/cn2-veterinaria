@@ -11,6 +11,6 @@ public class Client {
     private String email;
     private String telefono;
     private String direccion;
-    private Integer estadoId;
+    private Long estadoId;
     private Timestamp fechaCreacion;
 }

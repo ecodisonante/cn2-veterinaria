@@ -2,9 +2,9 @@ package com.veterinaria.dto;
 
 public record ClienteRequestDTO(
         String rut,
-        String nombreCompleto,
+        String nombre,
         String email,
         String telefono,
         String direccion,
-        Integer estadoId
+        Long estadoId
 ) {}

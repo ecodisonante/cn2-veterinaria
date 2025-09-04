@@ -8,10 +8,10 @@ import java.util.List;
 
 public class MascotaEstadoRepository {
 
-    public MascotaEstado findById(Connection conn, int estadoId) throws SQLException {
+    public MascotaEstado findById(Connection conn, long estadoId) throws SQLException {
         String q = "SELECT ID, NOMBRE FROM MASCOTA_ESTADO WHERE ID=?";
         try (PreparedStatement ps = conn.prepareStatement(q)) {
-            ps.setInt(1, estadoId);
+            ps.setLong(1, estadoId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return map(rs);
                 return null;

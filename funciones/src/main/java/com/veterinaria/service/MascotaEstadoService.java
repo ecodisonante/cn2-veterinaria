@@ -11,7 +11,7 @@ import java.util.List;
 public class MascotaEstadoService {
     private static final MascotaEstadoRepository repo = new MascotaEstadoRepository();
 
-    public MascotaEstado getById(int estadoId) throws SQLException {
+    public MascotaEstado getById(long estadoId) throws SQLException {
         try (Connection c = Db.open()) {
             return repo.findById(c, estadoId);
         }

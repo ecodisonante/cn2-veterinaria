@@ -3,10 +3,10 @@ package com.veterinaria.dto;
 public record ClientResponseDTO(
         Long id,
         String rut,
-        String nombreCompleto,
+        String nombre,
         String email,
         String telefono,
         String direccion,
-        Integer estadoId,
+        Long estadoId,
         String fechaCreacion
 ) {}

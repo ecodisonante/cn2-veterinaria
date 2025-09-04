@@ -35,15 +35,15 @@ public class MascotaRepository {
         try (PreparedStatement ps = conn.prepareStatement(query, new String[] { "ID" })) {
 
             ps.setString(1, m.getNombre());
-            ps.setInt(2, m.getEspecieId());
-            ps.setInt(3, m.getRazaId());
+            ps.setLong(2, m.getEspecieId());
+            ps.setLong(3, m.getRazaId());
             if (m.getFechaNacimiento() != null)
                 ps.setDate(4, m.getFechaNacimiento());
             else
                 ps.setNull(4, Types.DATE);
             ps.setObject(5, m.getClienteId());
-            ps.setInt(6, m.getSexoId());
-            ps.setInt(7, m.getEstadoId());
+            ps.setLong(6, m.getSexoId());
+            ps.setLong(7, m.getEstadoId());
             ps.setString(8, m.getFotoUrl());
             ps.setString(9, m.getOtraEspecie());
             ps.setString(10, m.getOtraRaza());
@@ -136,15 +136,15 @@ public class MascotaRepository {
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, m.getNombre());
-            ps.setInt(2, m.getEspecieId());
-            ps.setInt(3, m.getRazaId());
+            ps.setLong(2, m.getEspecieId());
+            ps.setLong(3, m.getRazaId());
             if (m.getFechaNacimiento() != null)
                 ps.setDate(4, m.getFechaNacimiento());
             else
                 ps.setNull(4, Types.DATE);
             ps.setObject(5, m.getClienteId());
-            ps.setInt(6, m.getSexoId());
-            ps.setInt(7, m.getEstadoId());
+            ps.setLong(6, m.getSexoId());
+            ps.setLong(7, m.getEstadoId());
             ps.setString(8, m.getFotoUrl());
             ps.setString(9, m.getOtraEspecie());
             ps.setString(10, m.getOtraRaza());
@@ -169,13 +169,13 @@ public class MascotaRepository {
         Mascota m = new Mascota();
         m.setId(rs.getLong("id"));
         m.setNombre(rs.getString("nombre"));
-        m.setEspecieId(rs.getInt("especie_id"));
-        m.setRazaId(rs.getInt("raza_id"));
+        m.setEspecieId(rs.getLong("especie_id"));
+        m.setRazaId(rs.getLong("raza_id"));
         Date f = rs.getDate("fecha_nacimiento");
         m.setFechaNacimiento(f != null ? f : null);
         m.setClienteId(rs.getLong("cliente_id"));
-        m.setSexoId(rs.getInt("sexo_id"));
-        m.setEstadoId(rs.getInt("estado_id"));
+        m.setSexoId(rs.getLong("sexo_id"));
+        m.setEstadoId(rs.getLong("estado_id"));
         m.setFotoUrl(rs.getString("foto_url"));
         m.setOtraEspecie(rs.getString("otra_especie"));
         m.setOtraRaza(rs.getString("otra_raza"));

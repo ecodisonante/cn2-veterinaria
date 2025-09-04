@@ -9,11 +9,11 @@ public class Mascota {
     private Long id;
     private Long clienteId;
     private String nombre;
-    private Integer especieId;
-    private Integer razaId;
+    private Long especieId;
+    private Long razaId;
     private Date fechaNacimiento;
-    private Integer sexoId;
-    private Integer estadoId;
+    private Long sexoId;
+    private Long estadoId;
     private String fotoUrl;
     private String otraEspecie;
     private String otraRaza;
