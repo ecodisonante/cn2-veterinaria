@@ -1,0 +1,35 @@
+# --- Catálogos/relaciones ---
+type Especie { id: ID!, nombre: String! }
+type Raza    { id: ID!, nombre: String!, especie: Especie! }
+type Sexo    { id: ID!, nombre: String! }
+type MascotaEstado { id: ID!, nombre: String! }
+
+# --- Dominio ---
+type Mascota {
+  id: ID!
+  nombre: String!
+  dueno: Cliente!           # FK: CLIENTE_ID
+  especie: Especie          # FK: ESPECIE_ID  (puede ser null)
+  raza: Raza                # FK: RAZA_ID     (puede ser null)
+  sexo: Sexo!               # FK: SEXO_ID
+  estado: MascotaEstado!    # FK: ESTADO_ID
+}
+
+type Cliente {
+  id: ID!
+  rut: String
+  nombre: String!
+  email: String
+  telefono: String
+  mascotas: [Mascota!]!     # Relación 1 a N (Mascota.CLIENTE_ID)
+}
+
+# --- Querie Mascota ---
+type Query {
+  mascota(id: ID!): Mascota
+}
+
+# --- Querie Cliente---
+extend type Query {
+  cliente(id: ID!): Cliente
+}
