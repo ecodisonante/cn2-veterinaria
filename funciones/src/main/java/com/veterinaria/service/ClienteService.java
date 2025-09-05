@@ -75,7 +75,7 @@ public class ClienteService {
     }
 
     private void validate(ClienteRequestDTO req) {
-        if (req == null || req.nombreCompleto() == null || req.nombreCompleto().isBlank())
+        if (req == null || req.nombre() == null || req.nombre().isBlank())
             throw new IllegalArgumentException("nombreCompleto requerido");
         if (req.email() == null || req.email().isBlank())
             throw new IllegalArgumentException("email requerido");

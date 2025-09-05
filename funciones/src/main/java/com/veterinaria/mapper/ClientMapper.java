@@ -15,7 +15,7 @@ public final class ClientMapper {
     public static Client toEntity(ClienteRequestDTO d) {
         Client c = new Client();
         c.setRut(d.rut());
-        c.setNombreCompleto(d.nombreCompleto());
+        c.setNombreCompleto(d.nombre());
         c.setEmail(d.email());
         c.setTelefono(d.telefono());
         c.setDireccion(d.direccion());

@@ -28,7 +28,7 @@ public class ClienteRepository {
             ps.setString(3, cli.getEmail());
             ps.setString(4, cli.getTelefono());
             ps.setString(5, cli.getDireccion());
-            ps.setInt(6, cli.getEstadoId());
+            ps.setLong(6, cli.getEstadoId());
             ps.setObject(7, cli.getFechaCreacion());
 
             ps.executeUpdate();
@@ -113,7 +113,7 @@ public class ClienteRepository {
             ps.setString(3, cli.getEmail());
             ps.setString(4, cli.getTelefono());
             ps.setString(5, cli.getDireccion());
-            ps.setInt(6, cli.getEstadoId());
+            ps.setLong(6, cli.getEstadoId());
             ps.setLong(7, cli.getId());
 
             int rows = ps.executeUpdate();
@@ -139,7 +139,7 @@ public class ClienteRepository {
         c.setEmail(rs.getString("email"));
         c.setTelefono(rs.getString("telefono"));
         c.setDireccion(rs.getString("direccion"));
-        c.setEstadoId(rs.getInt("estado_id"));
+        c.setEstadoId(rs.getLong("estado_id"));
         c.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
         return c;
     }

@@ -43,7 +43,18 @@ public class CitaRepository {
     }
 
     public Cita findById(Connection conn, Long id) throws SQLException {
-        String query = "SELECT * FROM CITA WHERE id=?";
+        String query = """
+                SELECT
+                    id,
+                    cliente_id,
+                    mascota_id,
+                    veterinario_id,
+                    fecha_hora,
+                    estado_id,
+                    motivo,
+                    fecha_creacion
+                FROM CITA WHERE id=?
+                """;
 
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setLong(1, id);
