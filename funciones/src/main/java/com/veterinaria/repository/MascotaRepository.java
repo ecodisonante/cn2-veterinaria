@@ -117,6 +117,39 @@ public class MascotaRepository {
         }
     }
 
+    public List<Mascota> findByCliente(Connection conn, long clienteId) throws SQLException {
+
+        String query = """
+                SELECT
+                    m.id,
+                    m.nombre,
+                    m.especie_id,
+                    m.raza_id,
+                    m.fecha_nacimiento,
+                    m.cliente_id,
+                    m.sexo_id,
+                    m.estado_id,
+                    m.foto_url,
+                    m.otra_especie,
+                    m.otra_raza,
+                    m.fecha_creacion
+                FROM MASCOTA m
+                WHERE m.cliente_id=?
+                ORDER BY m.id
+                """;
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setLong(1, clienteId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Mascota> out = new ArrayList<>();
+                while (rs.next())
+                    out.add(map(rs));
+                return out;
+            }
+        }
+    }
+
     public Mascota update(Connection conn, long id, Mascota m) throws SQLException {
 
         String query = """

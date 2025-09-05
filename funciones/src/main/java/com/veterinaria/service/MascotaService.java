@@ -51,9 +51,19 @@ public class MascotaService {
         }
     }
 
+    public List<MascotaResponseDTO> getByCliente(long clienteId) throws SQLException {
+        try (Connection c = Db.open()) {
+            List<Mascota> mascotas = repo.findByCliente(c, clienteId);
+
+            return mascotas.stream()
+                    .map(MascotaMapper::toResponse)
+                    .toList();
+        }
+    }
+
     public MascotaResponseDTO update(long id, MascotaRequestDTO req) throws SQLException {
         validate(req);
-        
+
         try (Connection c = Db.open()) {
             c.setAutoCommit(false);
 
