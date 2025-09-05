@@ -1,7 +1,6 @@
 package com.veterinaria.dto;
 
 public record MascotaRequestDTO(
-        Long id,
         Long clienteId,
         String nombre,
         Long especieId,

@@ -16,7 +16,6 @@ public final class MascotaMapper {
 
     public static Mascota toEntity(MascotaRequestDTO d) {
         Mascota m = new Mascota();
-        m.setId(d.id());
         m.setNombre(d.nombre());
         m.setEspecieId(d.especieId());
         m.setRazaId(d.razaId());

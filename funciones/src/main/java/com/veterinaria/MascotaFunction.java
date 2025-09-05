@@ -47,7 +47,7 @@ public class MascotaFunction {
             return response;
 
         } catch (Exception e) {
-            ctx.getLogger().log(java.util.logging.Level.SEVERE, "Error al ejecutar ClienteFunction", e);
+            ctx.getLogger().log(java.util.logging.Level.SEVERE, "Error al ejecutar MascotaFunction", e);
             return HttpUtils.internalErrorMessage(req, e.getMessage());
         }
     }
