@@ -47,7 +47,7 @@ public class GraphQLServiceImpl implements GraphQLService {
 
         ResponseEntity<Object> response = restTemplate.exchange(
                 url,
-                HttpMethod.PUT,
+                HttpMethod.POST,
                 requestEntity,
                 Object.class);
         return response.getBody();
