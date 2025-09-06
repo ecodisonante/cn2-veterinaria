@@ -79,3 +79,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### Custom ignores ###
+help.md
