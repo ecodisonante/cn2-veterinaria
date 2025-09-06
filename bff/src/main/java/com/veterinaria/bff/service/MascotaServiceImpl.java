@@ -1,0 +1,108 @@
+package com.veterinaria.bff.service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.veterinaria.bff.dto.MascotaRequestDTO;
+import com.veterinaria.bff.dto.MascotaResponseDTO;
+import com.veterinaria.bff.util.Json;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
+
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+@Service
+public class MascotaServiceImpl implements MascotaService {
+
+    private final RestTemplate restTemplate;
+
+    @Value("${azure.functions.url}")
+    private String functionsUrl;
+
+    public MascotaServiceImpl() {
+        this.restTemplate = new RestTemplate();
+    }
+
+    @Override
+    public List<MascotaResponseDTO> getAllMascotas() {
+        String url = functionsUrl + "/api/mascota";
+        MascotaResponseDTO[] response = restTemplate.getForObject(url, MascotaResponseDTO[].class);
+        return Arrays.asList(response);
+    }
+
+    @Override
+    public MascotaResponseDTO getMascotaById(Long id) {
+        String url = functionsUrl + "/api/mascota/" + id;
+        return restTemplate.getForObject(url, MascotaResponseDTO.class);
+    }
+
+    @Override
+    public List<MascotaResponseDTO> getMascotasByClienteId(Long clienteId) {
+        String url = functionsUrl + "/api/mascota?clienteId=" + clienteId;
+        MascotaResponseDTO[] response = restTemplate.getForObject(url, MascotaResponseDTO[].class);
+        return Arrays.asList(response);
+    }
+
+    @Override
+    public MascotaResponseDTO createMascota(MascotaRequestDTO mascotaRequestDTO) {
+        String url = functionsUrl + "/api/mascota";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String jsonRequest;
+        try {
+            jsonRequest = Json.write(mascotaRequestDTO);
+        } catch (JsonProcessingException e) {
+            log.error("Error al convertir el objeto a JSON", e);
+            return null;
+        }
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonRequest, headers);
+
+        ResponseEntity<MascotaResponseDTO> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                requestEntity,
+                MascotaResponseDTO.class);
+        return response.getBody();
+    }
+
+    @Override
+    public MascotaResponseDTO updateMascota(Long id, MascotaRequestDTO mascotaRequestDTO) {
+        String url = functionsUrl + "/api/mascota/" + id;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String jsonRequest;
+        try {
+            jsonRequest = Json.write(mascotaRequestDTO);
+        } catch (JsonProcessingException e) {
+            log.error("Error al convertir el objeto a JSON", e);
+            return null;
+        }
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonRequest, headers);
+
+        ResponseEntity<MascotaResponseDTO> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                requestEntity,
+                MascotaResponseDTO.class);
+        return response.getBody();
+    }
+
+    @Override
+    public void deleteMascota(Long id) {
+        String url = functionsUrl + "/api/mascota/" + id;
+        restTemplate.delete(url);
+    }
+}
