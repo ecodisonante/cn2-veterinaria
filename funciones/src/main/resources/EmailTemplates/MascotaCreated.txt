@@ -1,0 +1,6 @@
+Que tal --nombre--
+
+Desde hoy, tu mascota --nombre_mascota-- está más segura y cuenta con la mejor atención.
+
+Gracias por confiar en nosotros.
+VETCARE
