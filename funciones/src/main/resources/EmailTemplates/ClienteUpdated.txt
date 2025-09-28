@@ -1,0 +1,6 @@
+Hola, --nombre--
+
+Te informamos que los datos de tu perfil en VETCARE han sido actualizados correctamente.
+
+Gracias por mantener tu información al día.
+VETCARE
