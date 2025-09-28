@@ -1,0 +1,6 @@
+Hola, --nombre--
+
+Lamentamos informarte que el registro de tu mascota --nombre_mascota-- ha sido eliminado de VETCARE.
+
+Si crees que esto es un error, por favor contáctanos.
+VETCARE

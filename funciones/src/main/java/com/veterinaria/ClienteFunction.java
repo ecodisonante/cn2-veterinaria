@@ -27,19 +27,10 @@ public class ClienteFunction {
             HttpResponseMessage response;
 
             switch (req.getHttpMethod()) {
-                // Create
                 case POST -> response = handlePost(req);
-                
-                // Read
                 case GET -> response = handleGet(id, req);
-                
-                // Update
                 case PUT -> response = handleUpdate(id, req);
-                
-                // Delete
                 case DELETE -> response = handleDelete(id, req);
-
-                // Default
                 default -> response = req.createResponseBuilder(HttpStatus.METHOD_NOT_ALLOWED).build();
             }
 

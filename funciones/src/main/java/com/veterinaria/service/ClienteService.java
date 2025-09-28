@@ -3,6 +3,8 @@ package com.veterinaria.service;
 import com.veterinaria.domain.Client;
 import com.veterinaria.dto.ClienteRequestDTO;
 import com.veterinaria.dto.ClientResponseDTO;
+import com.veterinaria.events.CrudAction;
+import com.veterinaria.events.EventGridPublisherFactory;
 import com.veterinaria.mapper.ClientMapper;
 import com.veterinaria.repository.ClienteRepository;
 import com.veterinaria.repository.Db;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class ClienteService {
     private static final ClienteRepository repo = new ClienteRepository();
+    private static final String ENTITY = "Cliente";
 
     public ClientResponseDTO create(ClienteRequestDTO req) throws SQLException {
         validate(req);
@@ -28,7 +31,11 @@ public class ClienteService {
 
             conn.commit();
 
-            return ClientMapper.toResponse(cli);
+            var response = ClientMapper.toResponse(cli);
+
+            EventGridPublisherFactory.publishCrud(ENTITY, CrudAction.CREATED, String.valueOf(response.id()), response);
+
+            return response;
         }
     }
 
@@ -60,7 +67,11 @@ public class ClienteService {
             repo.update(conn, cli);
             conn.commit();
 
-            return ClientMapper.toResponse(repo.findById(conn, id));
+            var response = ClientMapper.toResponse(repo.findById(conn, id));
+
+            EventGridPublisherFactory.publishCrud(ENTITY, CrudAction.UPDATED, String.valueOf(response.id()), response);
+
+            return response;
         }
     }
 
@@ -68,9 +79,14 @@ public class ClienteService {
         try (Connection conn = Db.open()) {
             conn.setAutoCommit(false);
 
+            var deleted = ClientMapper.toResponse(repo.findById(conn, id));
             repo.delete(conn, id);
 
             conn.commit();
+
+            if(deleted != null) {
+                EventGridPublisherFactory.publishCrud(ENTITY, CrudAction.DELETED, String.valueOf(deleted.id()), deleted);
+            }
         }
     }
 
