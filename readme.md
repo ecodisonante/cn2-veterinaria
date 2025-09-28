@@ -1,33 +1,46 @@
-# 🐾 Sistema de Gestión Veterinaria
+<table>
+    <tr>
+        <td>
+            <img src="documentacion/logo150.png" alt="Logo VetCare">
+        </td>
+        <td>
+            <h1>VetCare <br> Sistema de Gestión Veterinaria</h1>
+        </td>
+    </tr>
+</table>
+
 
 ## 📌 Descripción
 
-Este proyecto corresponde a una solicitud académica de parte de Duoc UC, para la asignatura de **Desarrollo Cloud Native II**. No es un proyecto real, sino que simula la creación de un sistema informático cloud para una veterinaria. 
+Este proyecto corresponde a una solicitud académica de **Duoc UC** para la asignatura **Desarrollo Cloud Native II**.
+No es un sistema productivo, sino un ejercicio académico que simula la implementación de una **arquitectura cloud nativa basada en funciones serverless**.
 
-El objetivo final es crear un sistema informático cloud para una veterinaria que maneje la información de:
+El objetivo es crear un **backend serverless** para la gestión de una clínica veterinaria, incorporando:
 
-- Clientes
-- Mascotas
-- Inventario de medicamentos e insumos clínicos
-- Citas y agenda de consultas
-- Empleados
-- Historial clínico
-- Facturación y pagos
-- Comunicación con clientes
-- Integración con laboratorios externos
+* Clientes
+* Mascotas
+* Citas y reservas
+* Empleados
+* Integración con laboratorio
+* Comunicación automática con clientes
 
 ---
 
-**“Implementando un sistema con arquitectura Serverless”**.
+**“Implementando un sistema con arquitectura Serverless y basada en eventos”**.
 
-Se diseñó e implementó un **sistema backend para la gestión de una clínica veterinaria**, utilizando un enfoque **serverless e híbrido (REST + GraphQL)**, compuesto por:
+Se diseñó e implementó un sistema con:
 
-- **Microservicio BFF** (Spring Boot en Java, Docker).
-- Funciones **Serverless en Azure Functions (Java)**:
-  - `ClientesFn` → CRUD de clientes.
-  - `MascotasFn` → CRUD de mascotas.
-- **Módulo GraphQL**: consultas flexibles de clientes y mascotas.
-- **Oracle Autonomous DB** (conexión vía Wallet).
+* **Microservicio BFF** (Spring Boot en Java, Docker).
+* **Funciones Serverless (Azure Functions, Java):**
+  * `ClienteFunction` → CRUD de clientes.
+  * `MascotaFunction` → CRUD de mascotas.
+  * `EmpleadoFunction` → CRUD de empleados.
+  * `CitaFunction` → Generar reserva de atencion.
+  * `GraphQLFunction`→ Consultas flexibles de clientes y mascotas.
+  * `NotificacionesFunction` → escucha eventos y dispara notificaciones.
+* **Oracle Autonomous DB** para persistencia.
+* **Event Grid** para publicación/suscripción de eventos.
+* **Azure Communication Services (ACS Email)** para envío de correos personalizados.
 
 ---
 
@@ -35,38 +48,58 @@ Se diseñó e implementó un **sistema backend para la gestión de una clínica 
 
 ### Diagrama
 
-![Arquitectura Veterinaria](documentacion/Diagrama-v1.0.png)
+![Arquitectura Veterinaria](documentacion/Diagrama-v1.2.png)
 
-**Componentes actuales:**
-- **BFF (Spring Boot):** expone endpoints REST y GraphQL; orquesta llamadas a funciones.
-- **ClientesFn:** gestiona operaciones CRUD de clientes.
-- **MascotasFn:** gestiona operaciones CRUD de mascotas y relaciones con especies/razas.
-- **GraphQL Provider:** permite consultas flexibles (ej: cliente con todas sus mascotas, mascotas con detalles de especie/raza).
-- **Oracle DB:** Base de Datos Oracle Cloud.
+### Flujo principal
+
+1. El **Backoffice** invoca al **BFF** (REST/GraphQL).
+2. El **BFF** llama a las **Azure Functions** (CRUD de clientes, mascotas, citas, empleados).
+3. Tras cada operación **C/U/D**, el servicio publica un **evento en Event Grid**.
+4. Una **suscripción de Event Grid** activa la `NotificacionesFunction`.
+5. La Function procesa el evento y utiliza **ACS Email** para enviar un correo al cliente.
 
 ---
 
 ## ⚙️ Tecnologías utilizadas
 
-- **Backend Framework:** Spring Boot (Java 21).
-- **Funciones Serverless:** Azure Functions en Java.
-- **Lenguaje:** Java.
-- **Contenedores:** Docker para BFF.
-- **Base de Datos:** Oracle Autonomous Database (Wallet).
-- **Orquestación de consultas:** GraphQL Java.
-- **Control de versiones:** GitHub.
+* **Lenguaje:** Java 21
+* **Backend Framework:** Spring Boot (BFF)
+* **Funciones Serverless:** Azure Functions (v4, Java)
+* **Base de Datos:** Oracle Autonomous Database (Wallet)
+* **Eventos:** Azure Event Grid
+* **Notificaciones:** Azure Communication Services (Email)
+* **Orquestación de consultas:** GraphQL Java
+* **Contenedores:** Docker
+* **Control de versiones:** GitHub
 
 ---
 
-## 🚀 Funcionalidades principales (actuales)
+## 🚀 Funcionalidades actuales
 
 ### REST (Funciones CRUD)
-- **ClientesFn:** alta, baja, modificación y consulta de clientes.
-- **MascotasFn:** alta, baja, modificación y consulta de mascotas.
+
+* `ClienteFunction`: gestión de clientes.
+* `MascotaFunction`: gestión de mascotas.
+* `EmpleadoFunction`: gestión de empleados.
+* `CitaFunction`: gestión de citas.
 
 ### GraphQL
-- **Consultas:**
-  - Cliente con todas sus mascotas.
-  - Mascota con detalles de especie, raza y estado.
 
+Consultas integradas:
+
+* Cliente con todas sus mascotas.
+* Mascota con detalles de especie, raza y cliente asociado.
+
+### Event-Driven
+
+* Publicación de eventos:
+  * `com.veterinaria.mascota.created|updated|deleted`
+  * `com.veterinaria.cliente.created|updated|deleted`
+* `NotificacionesFunction`: escucha eventos y dispara notificaciones.
+
+### Notificaciones
+
+* **Email al cliente** al registrar/actualizar/eliminar mascota o cliente.
+* Plantillas **HTML + TXT** almacenadas en `/resources/templates`.
+* Personalización con nombre de cliente, nombre de mascota y branding de **VetCare**.
 
