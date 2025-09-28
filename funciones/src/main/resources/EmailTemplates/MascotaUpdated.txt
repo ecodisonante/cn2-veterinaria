@@ -1,0 +1,6 @@
+Hola, --nombre--
+
+Te informamos que los datos de tu mascota --nombre_mascota-- han sido actualizados correctamente.
+
+Gracias por mantener su información al día.
+VETCARE

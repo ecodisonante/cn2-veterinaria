@@ -32,6 +32,21 @@
             <artifactId>graphql-java</artifactId>
             <version>22.1</version>
         </dependency>
+
+        <!-- Azure Event Grid Dependency -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-messaging-eventgrid</artifactId>
+            <version>4.22.2</version>
+        </dependency>
+
+        <!-- Azure Communication Services - Email -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-communication-email</artifactId>
+            <version>1.0.14</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
